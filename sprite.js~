@@ -1,0 +1,57 @@
+var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create });
+var timer;
+
+var Game={
+
+
+function preload() {
+
+    this.load.image('grapes','grapes.png');
+    this.load.image('guava','guava.png');
+    this.load.image('watermelon','watermelon.png');
+    this.load.image('orange','orange.png');
+
+}
+
+function create() {
+
+    timer=game.time.create(false);
+    timer.loop(5000,updateCounter,this);
+        timer.start();
+
+    function updateCounter()
+    {
+    game.state.start('Game_Over');
+    }
+    
+
+    var mx = game.width - game.cache.getImage('grapes').width;
+    var my = game.height - game.cache.getImage('grapes').height;
+
+    for (var i = 0; i < 10; i++)
+
+    {
+       game.add.image(game.rnd.integerInRange(0, mx), game.rnd.integerInRange(0, my), 'guava');
+         game.add.image(game.rnd.integerInRange(0, mx), game.rnd.integerInRange(0, my), 'watermelon');
+           game.add.image(game.rnd.integerInRange(0, mx), game.rnd.integerInRange(0, my), 'orange');
+
+
+        var sprite = game.add.sprite(game.rnd.integerInRange(0, mx), game.rnd.integerInRange(0, my), 'grapes');
+
+        sprite.inputEnabled = true;
+
+        sprite.input.useHandCursor = true;
+
+        sprite.events.onInputDown.add(destroySprite, this);
+    }
+
+}
+
+function destroySprite (sprite) {
+
+    sprite.destroy();
+
+}
+};
+
+
